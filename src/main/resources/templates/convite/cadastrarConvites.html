@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="author" content="André Araújo"/>
+        <meta name="viewport" content="width=width-device, initial-scale=1.0"/>
+        
+        <link th:rel="stylesheet" th:href="@{assets/bootstrap-select-1.13.9/dist/css/bootstrap-select.css}"/>
+    	<link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>	
+    	
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">  
+	    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>  
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">  
+  
+		<!-- Compiled and minified CSS -->
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    	<!-- Compiled and minified JavaScript -->
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    	<!--Import Google Icon Font-->
+      	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+      	<!--Let browser know website is optimized for mobile-->
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    
+        <title>Eventos Esportivos</title>
+    </h:head>
+    
+    <h:body> 
+    	<div class="container">
+	    	<h1>Convidar Usuarios</h1>
+			<h3>
+				<a href="/evento/listarEventos" class="waves-effect waves-light btn">
+					<i class="material-icons left">view_list</i>Lista de Eventos
+				</a>
+			</h3>
+		</div>
+		<table class="container">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Apelido</th>
+					<th>Aceitar Convite</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="usuario : ${usuarios}">
+						<td><span th:text="${usuario.usu_nome_completo}" name="usu_nome_completo"></span></td>
+		  				<td><span th:text="${usuario.usu_apelido}" name="usu_apelido"></span></td>
+						<td>
+							<form method="post" th:action="@{/convite/cadastrarConvite}"> 
+								<button 
+									type="submit"
+									th:name="eve_id_convite"
+									th:value="${evento.eve_id}" 
+									name="eve_id_convite" 
+									class="waves-effect waves-light btn">
+									<i class="material-icons left">done</i>
+								</button>
+							</form>
+						</td>
+				</tr>
+			</tbody>
+		</table>
+		
+<!-- 		<div class="container">   -->
+<!-- 			<select class="form-control selectpicker" th:field="*{usuarios}" id="usuarios" multiple="multiple"> -->
+
+<!--                 <option th:each="usuario : ${usuarios}" -->
+<!--                                 th:value="${{usuario.usu_id}}" -->
+<!--                                 th:text="${usuario.usu_nome_completo}"> -->
+<!--                 </option> -->
+<!--         	</select> -->
+<!--         </div>    -->
+          
+
+    </h:body>
+
+    
+</html>

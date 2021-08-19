@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="author" content="André Araújo"/>
+        <meta name="viewport" content="width=width-device, initial-scale=1.0"/>
+        
+        <!--Import materialize.css-->
+<!--       	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/> -->
+		<!--JavaScript at end of body for optimized loading-->
+<!--     	<script type="text/javascript" src="materialize/js/materialize.min.js"></script> -->
+	
+		<!-- Compiled and minified CSS -->
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    	<!-- Compiled and minified JavaScript -->
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    	<!--Import Google Icon Font-->
+      	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+      	<!--Let browser know website is optimized for mobile-->
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        
+        <title>Eventos Esportivos</title>
+    </h:head>
+    
+    <h:body> 
+    	<div class="container">
+    	<h1>Cadastro de Eventos</h1>
+    	<h3>
+			<a href="listarEventos" class="waves-effect waves-light btn">
+				<i class="material-icons left">view_list</i>Lista de Eventos
+			</a>
+		</h3>
+		</div>
+    	<form class="container" method="post" action="cadastrarEvento">
+    		<div class="row">
+	    		
+	    		<div class="input-fiel col s6"> 
+	    			Nome/Descrição<input type="text" value="" name="eve_nome_desricao"/>
+	    		</div>
+	    		<div class="input-fiel col s6"> 
+    				Local/Endereço<input type="text" value="" name="eve_local_endereco"/> 
+    			</div>
+    		</div>
+    		<div class="row">
+    			<div class="input-fiel col s6"> 
+    				Data<input type="date" value="" name="eve_data"/>
+    			</div>
+    			<div class="input-fiel col s6"> 
+    				Hora<input type="time" value="" name="eve_hora"/>
+    			</div>
+    		</div>
+    		<div class="row">
+	    		<div class="input-fiel col s12">
+    				<button class="waves-effect waves-light btn" type="submit">Salvar</button>
+    			</div>
+    		</div>
+    		
+    		
+    	</form>
+    </h:body>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+</html>

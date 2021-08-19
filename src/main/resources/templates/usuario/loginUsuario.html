@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="author" content="André Araújo"/>
+        <meta name="viewport" content="width=width-device, initial-scale=1.0"/>
+        
+		<!-- Compiled and minified CSS -->
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    	<!-- Compiled and minified JavaScript -->
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    	<!--Import Google Icon Font-->
+      	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+      	<!--Let browser know website is optimized for mobile-->
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title>Eventos Esportivos</title>
+    </h:head>
+    
+    <h:body> 
+    	<div class="container">
+    		<h2>Eventos Esportivos Login</h2>
+		</div>
+    	<form class="container" method="post" action="login">
+    		<div class="row">
+	    		
+	    		<div class="input-fiel col s6"> 
+	    			Email: <input type="text" value="" name="usu_email"/>
+	    		</div>
+	    		<div class="input-fiel col s6"> 
+    				Senha: <input type="password" value="" name="usu_senha"/> 
+    			</div>	
+
+    		</div>
+    		<div class="row">
+	    		<div class="input-fiel col s12">
+    				<button class="waves-effect waves-light btn" type="submit">
+    					<i class="material-icons left">account_circle</i>Login
+    				</button>
+	    			<a href="cadastrarUsuario" class="waves-effect waves-light btn">
+						<i class="material-icons left">people</i>Cadastrar Usuario	
+					</a>
+				</div>
+    		</div>
+    	</form>
+    </h:body>
+</html>
