@@ -1,0 +1,46 @@
+
+Java 1.8
+spring-boot-starter-parent 
+eclipse-jee-2021-06-R-win32-x86_64
+postgresql-9.5.25
+
+Ambiente tecnológico utilizado e suas versões
+• Java jdk 1.8
+• Maven 3.6.3
+• Spring 2.5.4
+• PostgreSQL 9.5.25
+• Hibernate hibernate-core-5.4.32.jar
+• PrimeFaces primefaces-8.0.jar
+• Criteria (desejável) utilizado spring-data-jpa-2.5.3.jar
+
+Orientações de montagem do ambiente
+0. Instalar jdk 1.8
+1. Instalar o mavem 
+2. Instalar o eclipse
+3. Instalar o PostgreSQL
+4. Fazer o download ou clone do projeto no github: https://github.com/andrearaujos/eventosEsportivos.git
+5. Colocar o projeto baixado na pasta do workspace do eclipse;
+6. Importar o projeto como mavem project no eclipse
+7. Configurar o bd:
+	No postgree 
+		Criar o banco de dados com nome EveEsp
+		Criar o schema eventosesportivos
+	No projeto eventosesportivos:
+		Em \src\main\resources
+		Abrir o arquivo application.properties
+		Alterar o username e password para o cadastrado na instação do PostgreSQL
+			spring.datasource.username=postgres
+			spring.datasource.password=admin
+	
+8. Com o projeto aberto no eclipse ir no pacote br.com.eventosesportivos e rodar a classe EventosesportivosApplication.java
+	Para rodar o projeto
+	Clicar com o direito sobre a classe
+		Ir em: run as
+			Ir em: 2 java application
+9. Acessar através do navegador na url http://localhost:8080/
+
+
+
+Obs 1: O projeto não precisar de carga no banco, os registros podem ser criados pela aplicação;
+Obs 2: Não foi passado o script de banco, pois o hibernate cria a bd;
+
