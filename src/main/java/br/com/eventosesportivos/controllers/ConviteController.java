@@ -78,6 +78,7 @@ public class ConviteController {
 	public ModelAndView convidarView() {
 		ModelAndView mv = new ModelAndView("convite/convidarView");
 		List<Evento> evlist = eventoRepository.findAll();
+		
 		mv.addObject("eventos",evlist);
 		//return "evento/listarEvento";
 		return mv;
@@ -88,16 +89,15 @@ public class ConviteController {
 	//@PostMapping("/cadastrarConvite/{id}")
 	@RequestMapping("/cadastrarConviteView")
 	public ModelAndView cadastrarConviteView(@RequestParam(value = "eve_id_convite", required = false) String id,Model model, HttpSession session) {
-	
-	//@RequestMapping(value="/cadastrarConviteView", method=RequestMethod.POST)
-	//public ModelAndView cadastrarConviteView(Evento evento, HttpSession session) {
 		
-		//session.setAttribute("evento_id_cadastrar_convite", evento.getEve_id());
-		System.out.println("chegou em cadastrarConviteView");
-		System.out.println("evento " +id);
-		
+		long id_evento;
+		if(id != null) {
+			session.setAttribute("evento_id_cadastrar_convite", id);
+			id_evento = Long.valueOf(id);
+		}else {
+			id_evento = Long.valueOf((String) session.getAttribute("evento_id_cadastrar_convite"));
+		}
 		Evento eve = new Evento();
-		long id_evento = Long.valueOf(id);
 		Optional<Evento> e = eventoRepository.findById(id_evento);
 		if(e.isPresent()) {
 			eve = e.get();
@@ -135,16 +135,6 @@ public class ConviteController {
 		
 	}
 	
-//	@RequestMapping(value="/cadastrarUsuario", method=RequestMethod.POST)
-//	public ModelAndView formUsuario(Usuario u) throws Exception {
-//		usuarioService.salvarUsuario(u);
-//		//return "redirect:/evento/listarEventos";
-//		//return new ModelAndView("/");
-//		//LoginController lc = new LoginController();
-//		//lc.login();
-//		//return "redirect:/";
-//		return new ModelAndView("redirect:/");
-//	}
 	
 	@RequestMapping(value="/registrarConvite", method=RequestMethod.POST)
 	public ModelAndView cadastrarConvite(Usuario usu, HttpSession session) {
@@ -154,7 +144,12 @@ public class ConviteController {
 		Usuario convidante = (Usuario) session.getAttribute("usuarioLogado");
 		System.out.println(convidante.getUsu_email());
 		
-		long id_evento = (long) session.getAttribute("evento_id_cadastrar_convite");
+		System.out.println(session.getAttribute("evento_id_cadastrar_convite"));
+		System.out.println( Long.valueOf((String) session.getAttribute("evento_id_cadastrar_convite")) );
+		//Long.valueOf(ulogado.getUsu_id());
+		
+		long id_evento = Long.valueOf((String) session.getAttribute("evento_id_cadastrar_convite"));// (long) session.getAttribute("evento_id_cadastrar_convite");
+		
 		Evento eve = new Evento();
 		Optional<Evento> e = eventoRepository.findById(id_evento);
 		if(e.isPresent()) {

@@ -61,7 +61,7 @@
 		  				<td><span th:text="${evento.eve_data}" name="eve_data"></span></td>
 		  				<td><span th:text="${evento.eve_hora}" name="eve_hora"></span></td>
 						<td>
-							<form method="post" th:action="@{vincular}"> 
+							<form method="post" th:action="@{/evento/vincular}"> 
 								<button 
 									type="submit"
 									th:name="eve_id"
