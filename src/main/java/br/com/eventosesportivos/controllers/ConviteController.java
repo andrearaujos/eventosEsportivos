@@ -107,24 +107,23 @@ public class ConviteController {
 		List<Usuario> usuList = usuarioRepository.buscarUsuariosNotInId(u.getUsu_id());
 		
 		List<Convite> con_list = conviteRepository.findAll();
-		List<Usuario> usuarioJaConvidados = new ArrayList<Usuario>();
-		for(Convite c : con_list) {
-			//c.getCon_usuario_convidado().getUsu_id()
+		ArrayList<Usuario> usuarioJaConvidados = new ArrayList<Usuario>();
+	
+		Convite c = new Convite();
+		for(int i = 0; i < con_list.size(); i++) {
+			c = con_list.get(i);
 			if(c.getCon_evento().getEve_id() == id_evento) {
 				usuarioJaConvidados.add(c.getCon_usuario_convidado());
 			}
 		}
-		
-		ArrayList<String> a = new ArrayList();
+		Usuario uTodos = new Usuario();
 		boolean jafoiconvidado = false;
-		for(Usuario uTodos : usuList) {
-			for(Usuario ujaconv : usuarioJaConvidados) {
+		for(Usuario ujaconv : usuarioJaConvidados) {
+			for(int i = 0; i < usuList.size(); i++) {
+				uTodos = usuList.get(i);
 				if ( uTodos.getUsu_id() == ujaconv.getUsu_id() ) {
-					jafoiconvidado = true;
+					usuList.remove(uTodos);
 				}
-			}
-			if(jafoiconvidado) {
-				usuList.remove(uTodos);
 			}
 		}
 		
