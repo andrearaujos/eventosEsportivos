@@ -31,7 +31,7 @@ public class UsuarioService {
 			if(usuarioRepository.findByEmail(u.getUsu_email()) != null ) {
 				throw new UsuarioException("Já existe um e-mail cadatrado para: "+u.getUsu_email());
 			}
-			System.out.println("teste md5");
+			//System.out.println("teste md5");
 			Util ut = new Util();
 			String senhaCriptografadamd5 = ut.md5(u.getUsu_senha());
 			//u.setUsu_senha(senhaCriptografadamd5);

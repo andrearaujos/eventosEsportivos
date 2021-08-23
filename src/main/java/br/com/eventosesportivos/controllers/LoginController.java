@@ -26,8 +26,8 @@ public class LoginController {
 	private UsuarioService usuarioService;
 	
 	@GetMapping("/")
-	public ModelAndView login() {
-		ModelAndView mv = new ModelAndView("login/login");
+	public ModelAndView loginView() {
+		ModelAndView mv = new ModelAndView("login/loginView");
 		//mv.addObject("usuario", new Usuario());
 		//mv.addObject("msg","Teste");
 		return mv;
@@ -35,16 +35,10 @@ public class LoginController {
 	
 	@PostMapping("executaLogin")
 	public ModelAndView executaLogin(Usuario u, BindingResult br, HttpSession session) throws NoSuchAlgorithmException{
-		//ModelAndView mv = new ModelAndView("login/login");
-		
-		System.out.println(u.getUsu_email());
-		System.out.println(u.getUsu_senha());
-		
-		
+
 		ModelAndView mv = new ModelAndView("redirect:/");
 		mv.addObject("usuario",new Usuario());
 		if(br.hasErrors()) {
-			//mv.setViewName("login/login");
 			mv.setViewName("/");
 		}
 		
@@ -52,23 +46,20 @@ public class LoginController {
 		System.out.println("debug");
 		Usuario usuario = usuarioService.loginUsuario(u.getUsu_email(), u.getUsu_senha());
 		if(usuario == null) {
-			mv.addObject("msg","Usuário não encontrado");
-			//mv.setViewName("/");
-			//return mv; 
-			
+			mv.addObject("msg","Usuário não encontrado");			
 		}else {
 			session.setAttribute("usuarioLogado", usuario);
 			return new ModelAndView("redirect:/evento/listarEventos");
 		}
 		
 		return mv;
-		
-		//return new ModelAndView("redirect:/evento/listarEventos");
-		
-		//System.out.println("executaLogin===========================");
-		//mv.addObject("msg","Teste");
-		//return mv;
-		//return new ModelAndView("redirect:/");
+	}
+	
+	@GetMapping("/sair")
+	public ModelAndView sair(HttpSession hs) {
+		hs.invalidate();
+		ModelAndView mv = new ModelAndView("redirect:/");
+		return mv;
 	}
 	
 //	@GetMapping("/")

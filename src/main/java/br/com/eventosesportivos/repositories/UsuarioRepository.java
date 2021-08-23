@@ -1,5 +1,7 @@
 package br.com.eventosesportivos.repositories;
 
+import java.util.List;
+
 //import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +18,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long>{
 	@Query("select j from Usuario j where j.email = :email and j.senha = :senha")
 	public Usuario buscarLogin(String email, String senha);
 
+	@Query("select k from Usuario k where k.id not in (:id)")
+	public List<Usuario> buscarUsuariosNotInId(long id);
 	
 }

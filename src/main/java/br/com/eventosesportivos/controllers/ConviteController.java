@@ -34,10 +34,10 @@ public class ConviteController {
 	@Autowired
 	private ConviteRepository conviteRepository;
 	
-	@GetMapping("/meusConvites")
-	public ModelAndView meusConvites(HttpSession session) {
+	@GetMapping("/meusConvitesView")
+	public ModelAndView meusConvitesView(HttpSession session) {
 		//return new ModelAndView("convite/listarConvites");
-		ModelAndView mv = new ModelAndView("convite/listarConvites");
+		ModelAndView mv = new ModelAndView("convite/meusConvitesView");
 		Usuario u = (Usuario) session.getAttribute("usuarioLogado");
 		System.out.println(u.getUsu_nome_completo());
 		
@@ -47,37 +47,103 @@ public class ConviteController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/convidarView", method=RequestMethod.GET)
+	public ModelAndView convidarView() {
+		ModelAndView mv = new ModelAndView("convite/convidarView");
+		List<Evento> evlist = eventoRepository.findAll();
+		mv.addObject("eventos",evlist);
+		//return "evento/listarEvento";
+		return mv;
+	}
+	
 	//@RequestMapping(value="/cadastrarConvite", method=RequestMethod.POST)
 	//@PostMapping("/cadastrarConvite")
 	//@PostMapping("/cadastrarConvite/{id}")
-	@RequestMapping("/cadastrarConvite")
-	public ModelAndView cadastrarConvite(@RequestParam(value = "eve_id_convite", required = false) String id,Model model, HttpSession session) {
+	@RequestMapping("/cadastrarConviteView")
+	public ModelAndView cadastrarConviteView(@RequestParam(value = "eve_id_convite", required = false) String id,Model model, HttpSession session) {
+	
+	//@RequestMapping(value="/cadastrarConviteView", method=RequestMethod.POST)
+	//public ModelAndView cadastrarConviteView(Evento evento, HttpSession session) {
 		
-		ModelAndView mv = new ModelAndView("convite/cadastrarConvites");
+		//session.setAttribute("evento_id_cadastrar_convite", evento.getEve_id());
+		System.out.println("chegou em cadastrarConviteView");
+		System.out.println("evento " +id);
+		
 		Evento eve = new Evento();
 		long id_evento = Long.valueOf(id);
 		Optional<Evento> e = eventoRepository.findById(id_evento);
 		if(e.isPresent()) {
 			eve = e.get();
 		}
+		
+		Usuario u = (Usuario) session.getAttribute("usuarioLogado");
+		List<Usuario> usuList = usuarioRepository.buscarUsuariosNotInId(u.getUsu_id());
+		
+		List<Convite> con_list = conviteRepository.findAll();
+		for(Convite c : con_list) {
+			//c.getCon_usuario_convidado().getUsu_id()
+		}
+		
+		ModelAndView mv = new ModelAndView("convite/cadastrarConviteView");
 		mv.addObject("evento",eve);
-		List<Usuario> usuList = usuarioRepository.findAll();
 		mv.addObject("usuarios",usuList);
-		System.out.println("id_evento ========= "+id_evento);
-		System.out.println("Numero de usuario cadastrador: " + usuList.size());
-		
-//		List<Convite> possiveisConvidadosList = new ArrayList<Convite>();
-//		for(Usuario us : usuList) {
-//			Convite con = new Convite();
-//			con.setCon_evento(eve);
-//			con.setCon_usuario_convidado(us);
-//		}
-//		mv.addObject("possiveisConvidados",possiveisConvidadosList);
-		
-		session.setAttribute("eventoCadastrarConvite", id_evento);
-		
 		return mv;
 		
+	}
+	
+//	@RequestMapping(value="/cadastrarUsuario", method=RequestMethod.POST)
+//	public ModelAndView formUsuario(Usuario u) throws Exception {
+//		usuarioService.salvarUsuario(u);
+//		//return "redirect:/evento/listarEventos";
+//		//return new ModelAndView("/");
+//		//LoginController lc = new LoginController();
+//		//lc.login();
+//		//return "redirect:/";
+//		return new ModelAndView("redirect:/");
+//	}
+	
+	@RequestMapping(value="/registrarConvite", method=RequestMethod.POST)
+	public ModelAndView cadastrarConvite(Usuario usu, HttpSession session) {
+		Convite c = new Convite();
+		System.out.println("convite registrarConvite");
+		
+		Usuario convidante = (Usuario) session.getAttribute("usuarioLogado");
+		System.out.println(convidante.getUsu_email());
+		
+		long id_evento = (long) session.getAttribute("evento_id_cadastrar_convite");
+		Evento eve = new Evento();
+		Optional<Evento> e = eventoRepository.findById(id_evento);
+		if(e.isPresent()) {
+			eve = e.get();
+		}
+		System.out.println(eve.getEve_nome_desricao());
+		System.out.println("convidado"+usu.getUsu_id());
+		
+		Usuario convidado = new Usuario();
+		Optional<Usuario> con = usuarioRepository.findById(usu.getUsu_id());
+		if(con.isPresent()) {
+			convidado = con.get();
+		}
+		
+		//String url = "redirect:/evento/listarEventos/";
+		String url = "redirect:/convite/cadastrarConviteView/";
+		url = url + eve.getEve_id();
+		
+		String id = "";
+		id = id+eve.getEve_id();
+		
+		//cadastrarConviteView(id, null, session);
+		//return new ModelAndView(url);
+		
+		
+		c.setCon_evento(eve);
+		c.setCon_usuario_convidado(convidado);
+		c.setCon_usuario_convidante(convidante);
+	
+		this.conviteRepository.save(c);
+		//this.eventoRepository.save(e);
+		ModelAndView mv = new ModelAndView("convite/convidarView");
+		return mv;
 	}
 	
 //	@RequestMapping(value="/listarEventos", method=RequestMethod.GET)

@@ -37,10 +37,10 @@
     
     <h:body> 
     	<div class="container">
-	    	<h1>Convidar Usuarios</h1>
+	    	<h1>Registrar Convite</h1>
 			<h3>
-				<a href="/evento/listarEventos" class="waves-effect waves-light btn">
-					<i class="material-icons left">view_list</i>Lista de Eventos
+				<a th:href="@{/convite/convidarView}" class="waves-effect waves-light btn">
+					<i class="material-icons left">email</i>Convidar
 				</a>
 			</h3>
 		</div>
@@ -49,7 +49,7 @@
 				<tr>
 					<th>Nome</th>
 					<th>Apelido</th>
-					<th>Aceitar Convite</th>
+					<th>Convidar</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -57,11 +57,11 @@
 						<td><span th:text="${usuario.usu_nome_completo}" name="usu_nome_completo"></span></td>
 		  				<td><span th:text="${usuario.usu_apelido}" name="usu_apelido"></span></td>
 						<td>
-							<form method="post" th:action="@{/convite/cadastrarConvite}"> 
+							<form method="post" th:action="@{registrarConvite}"> 
 								<button 
 									type="submit"
-									th:name="eve_id_convite"
-									th:value="${evento.eve_id}" 
+									th:name="usu_id"
+									th:value="${usuario.usu_id}" 
 									name="eve_id_convite" 
 									class="waves-effect waves-light btn">
 									<i class="material-icons left">done</i>

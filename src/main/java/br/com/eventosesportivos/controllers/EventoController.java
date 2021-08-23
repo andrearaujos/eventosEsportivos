@@ -43,22 +43,85 @@ public class EventoController {
 	@Autowired
 	private VincularRepository vincularRepository;
 	
+	@RequestMapping(value="/listarEventos", method=RequestMethod.GET)
+	public ModelAndView listarEventos() {
+		ModelAndView mv = new ModelAndView("evento/listarEventos");
+		List<Evento> evlist = eventoRepository.findAll();
+		mv.addObject("eventos",evlist);
+		//return "evento/listarEvento";
+		return mv;
+	}
 	
-	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.GET)
-	public String formEvento() {
-		return "evento/cadastrarEvento";
+	@RequestMapping(value="/cadastrarEventoView", method=RequestMethod.GET)
+	public String cadastrarEventoView() {
+		return "evento/cadastrarEventoView";
+		//return new ModelAndView("evento/formEvento");
+	}
+	
+	@RequestMapping(value="/meusEventosView", method=RequestMethod.GET)
+	public ModelAndView meusEventosView(HttpSession session) {
+		ModelAndView mv = new ModelAndView("evento/meusEventosView");
+		System.out.println("chegou aqui");
+		
+		Usuario ulogado = (Usuario) session.getAttribute("usuarioLogado");
+		System.out.println(ulogado.getUsu_id());
+		long id = Long.valueOf(ulogado.getUsu_id());
+		List<Vincular> v_list_all = vincularRepository.findAll();
+		List<Evento> e_list = new ArrayList();
+		
+		for(Vincular vin : v_list_all) {
+			
+			System.out.println("vin.getVin_usuario().getUsu_id() "+vin.getVin_usuario().getUsu_id() );
+			System.out.println("ulogado.getUsu_id() "+ulogado.getUsu_id());
+			if(vin.getVin_usuario().getUsu_id() == ulogado.getUsu_id()) {
+				System.out.println("chegou aqui 2");
+				System.out.println("vin.getVin_evento().getEve_id()"+ vin.getVin_evento().getEve_id());
+				Optional<Evento> op_ev = eventoRepository.findById(vin.getVin_evento().getEve_id());
+				
+				System.out.println(op_ev.get().getEve_nome_desricao());
+				//Evento evento = new Evento();
+				if(op_ev.isPresent()) {
+					e_list.add(op_ev.get()); //evento = op_ev.get();
+				}
+				//System.out.println("evento.getEve_nome_desricao() ===="+ evento.getEve_nome_desricao());
+				//e_list.add(evento);
+			}
+		}
+		
+//		
+//		List<Evento> ev_list = null;
+//		for(Vincular v : v_list) {
+//			Optional<Evento> op_ev = eventoRepository.findById(v.getVin_evento().getEve_id());
+//			Evento ev = new Evento();
+//			if(op_ev.isPresent()) {
+//				ev = op_ev.get();
+//			}
+//			ev_list.add(ev);
+//		}
+//		
+//		 //= eventoRepository.findAll();
+		mv.addObject("eventos",e_list);
+		return mv;
+		//return "evento/meusEventosView";
 		//return new ModelAndView("evento/formEvento");
 	}
 	
 	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.POST)
-	public String formEvento(Evento e) {
-		Usuario usu = new Usuario();
-		Optional<Usuario> u =  this.usuarioRepository.findById(1L);
-		if(u.isPresent()) {
-			usu = u.get();
-		}
-		e.setEve_usuario(usu);
+	public String formEvento(Evento e, HttpSession session) {
+		Usuario ulogado = (Usuario) session.getAttribute("usuarioLogado");
+		e.setEve_usuario(ulogado);
 		this.eventoRepository.save(e);
+		long id_evento = this.eventoRepository.maxId();
+		Optional<Evento> op = eventoRepository.findById(id_evento);
+		Evento ev = new Evento();
+		if(op.isPresent()) {
+			ev = op.get();
+		}
+		
+		Vincular v = new Vincular();
+		v.setVin_evento(ev);
+		v.setVin_usuario(ulogado);
+		this.vincularRepository.save(v);
 		return "redirect:/evento/listarEventos";
 	}
 	
@@ -80,6 +143,7 @@ public class EventoController {
 		return "redirect:/evento/listarEventos";
 		
 	}
+	
 	@RequestMapping("/vincular")
 	public String vincular(@RequestParam(value = "eve_id", required = false) String id,Model model, HttpSession session) {
 		//model.addAttribute("id", id);
@@ -93,7 +157,7 @@ public class EventoController {
 			ev = op.get();
 		}
 		
-		System.out.println(u.getUsu_id());
+		//System.out.println(u.getUsu_id());
 		
 		Vincular v = new Vincular();
 		v.setVin_evento(ev);
@@ -105,15 +169,7 @@ public class EventoController {
 	}
 	
 
-	@RequestMapping(value="/listarEventos", method=RequestMethod.GET)
-	public ModelAndView listarEventos() {
-		ModelAndView mv = new ModelAndView("evento/listarEventos");
-		List<Evento> evlist = eventoRepository.findAll();
-		mv.addObject("eventos",evlist);
-		
-		//return "evento/listarEvento";
-		return mv;
-	}
+	
 	
 	@RequestMapping("/convidados/{eve_id}")
 	public ModelAndView convidadosDoEvento(@PathVariable("eve_id") long id) {
