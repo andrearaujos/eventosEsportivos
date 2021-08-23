@@ -47,29 +47,33 @@
 		<table class="container">
 			<thead>
 				<tr>
-					<th>Nome</th>
-					<th>Apelido</th>
-					<th>Aceitar Convite</th>
+					<th>Nome/Descrição</th>
+					<th>Local/Endereço</th>
+					<th>Data</th>
+					<th>Hora</th>
+					<th>Vincular</th>
 				</tr>
 			</thead>
-<!-- 			<tbody> -->
-<!-- 				<tr th:each="usuario : ${usuarios}"> -->
-<!-- 						<td><span th:text="${usuario.usu_nome_completo}" name="usu_nome_completo"></span></td> -->
-<!-- 		  				<td><span th:text="${usuario.usu_apelido}" name="usu_apelido"></span></td> -->
-<!-- 						<td> -->
-<!-- 							<form method="post" th:action="@{/convite/cadastrarConvite}">  -->
-<!-- 								<button  -->
-<!-- 									type="submit" -->
-<!-- 									th:name="eve_id_convite" -->
-<!-- 									th:value="${evento.eve_id}"  -->
-<!-- 									name="eve_id_convite"  -->
-<!-- 									class="waves-effect waves-light btn"> -->
-<!-- 									<i class="material-icons left">done</i> -->
-<!-- 								</button> -->
-<!-- 							</form> -->
-<!-- 						</td> -->
-<!-- 				</tr> -->
-<!-- 			</tbody> -->
+			<tbody>
+				<tr th:each="evento : ${eventos}">
+						<td><span th:text="${evento.eve_nome_desricao}" name="eve_nome_desricao"></span></td>
+		  				<td><span th:text="${evento.eve_local_endereco}" name="eve_local_endereco"></span></td>
+		  				<td><span th:text="${evento.eve_data}" name="eve_data"></span></td>
+		  				<td><span th:text="${evento.eve_hora}" name="eve_hora"></span></td>
+						<td>
+							<form method="post" th:action="@{vincular}"> 
+								<button 
+									type="submit"
+									th:name="eve_id"
+									th:value="${evento.eve_id}" 
+									name="eve_id" 
+									class="waves-effect waves-light btn">
+									<i class="material-icons left">done</i>
+								</button>
+							</form>
+						</td>
+				</tr>
+			</tbody>
 		</table>
   		
     </h:body>

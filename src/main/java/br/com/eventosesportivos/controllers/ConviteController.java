@@ -19,9 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.eventosesportivos.models.Convite;
 import br.com.eventosesportivos.models.Evento;
 import br.com.eventosesportivos.models.Usuario;
+import br.com.eventosesportivos.models.Vincular;
 import br.com.eventosesportivos.repositories.ConviteRepository;
 import br.com.eventosesportivos.repositories.EventoRepository;
 import br.com.eventosesportivos.repositories.UsuarioRepository;
+import br.com.eventosesportivos.repositories.VincularRepository;
 
 @Controller
 @RequestMapping("/convite")
@@ -33,17 +35,42 @@ public class ConviteController {
 	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private ConviteRepository conviteRepository;
+	@Autowired
+	private VincularRepository vincularRepository;
 	
 	@GetMapping("/meusConvitesView")
 	public ModelAndView meusConvitesView(HttpSession session) {
 		//return new ModelAndView("convite/listarConvites");
 		ModelAndView mv = new ModelAndView("convite/meusConvitesView");
 		Usuario u = (Usuario) session.getAttribute("usuarioLogado");
-		System.out.println(u.getUsu_nome_completo());
-		
-		List<Convite> convitesDoUsuario = conviteRepository.convitesPorIdDeConvidado(u.getUsu_id());
-//		System.out.println(convitesDoUsuario);
-		
+
+		List<Convite> convitesDoUsuario = new ArrayList<Convite>();
+		List<Convite> con_list = conviteRepository.findAll();
+		List<Evento> eventoQueFoiConvidado = new ArrayList<Evento>();
+		List<Vincular> vincular_lista_tudo = vincularRepository.findAll();
+				
+		for(Convite c : con_list) {
+			if(u.getUsu_id() == c.getCon_usuario_convidado().getUsu_id()) {
+				convitesDoUsuario.add(c);
+				
+				Evento eve = new Evento();
+				Optional<Evento> e = eventoRepository.findById(c.getCon_evento().getEve_id());
+				if(e.isPresent()) {
+					eve = e.get();
+				}
+				boolean jatemvinculo = false;
+				for (Vincular v : vincular_lista_tudo) {
+					
+					if(u.getUsu_id() == v.getVin_usuario().getUsu_id() && eve.getEve_id() == v.getVin_evento().getEve_id()){
+						jatemvinculo = true;
+					}
+				}
+				if(jatemvinculo == false) {
+					eventoQueFoiConvidado.add( eve );
+				}
+			}
+		}
+		mv.addObject("eventos",eventoQueFoiConvidado);
 		return mv;
 	}
 	
@@ -80,8 +107,25 @@ public class ConviteController {
 		List<Usuario> usuList = usuarioRepository.buscarUsuariosNotInId(u.getUsu_id());
 		
 		List<Convite> con_list = conviteRepository.findAll();
+		List<Usuario> usuarioJaConvidados = new ArrayList<Usuario>();
 		for(Convite c : con_list) {
 			//c.getCon_usuario_convidado().getUsu_id()
+			if(c.getCon_evento().getEve_id() == id_evento) {
+				usuarioJaConvidados.add(c.getCon_usuario_convidado());
+			}
+		}
+		
+		ArrayList<String> a = new ArrayList();
+		boolean jafoiconvidado = false;
+		for(Usuario uTodos : usuList) {
+			for(Usuario ujaconv : usuarioJaConvidados) {
+				if ( uTodos.getUsu_id() == ujaconv.getUsu_id() ) {
+					jafoiconvidado = true;
+				}
+			}
+			if(jafoiconvidado) {
+				usuList.remove(uTodos);
+			}
 		}
 		
 		ModelAndView mv = new ModelAndView("convite/cadastrarConviteView");
